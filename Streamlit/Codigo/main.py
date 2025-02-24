@@ -2,7 +2,7 @@ import streamlit as st
 from cargar_datos import cargar_datos
 from vista_graficos import vista_graficos
 from primera_pagina import primera_pagina
-
+from vista_detallada import vista_detallada
 
 # Configuración de la app
 st.set_page_config(
