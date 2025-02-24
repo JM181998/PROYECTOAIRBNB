@@ -6,6 +6,8 @@ from cargar_datos import cargar_datos
 
     #if st.button("⬅️ Volver"):
         #os._exit(0)
+
+
 #revisar cargar datos
 df = cargar_datos()
 df = df.dropna(subset=['precio'])
@@ -51,6 +53,13 @@ def vista_graficos():
 
     scatter_segmentado(df, 'superficie_construida', 'precio', 'CCAA')
 
+    st.write("### Conclusiones del análisis de precio vs. superficie construida por CCAA")
+    st.write("Concentración en rangos bajos: La mayoría de las propiedades tienen superficies menores a 200 m² y precios inferiores a 10,000€")
+    st.write("Valores atípicos: Existen algunas propiedades con precios muy elevados (hasta 80,000€) y grandes superficies (+600 m²)")
+    st.write("Tendencia positiva: En general, el precio tiende a aumentar con la superficie construida, aunque con gran dispersión")
+    st.write("Diferencias entre CCAA: Regiones como Madrid, Cataluña e Islas Baleares presentan precios más elevados en comparación con otras comunidades.")
+    st.write("Mercado heterogéneo: Aunque la relación precio-superficie es clara, otros factores como ubicación")
+
     ##ENRIQUE
     if 'antiguedad' in df.columns and 'precio' in df.columns:
         # Eliminar valores nulos
@@ -69,7 +78,7 @@ def vista_graficos():
         precio_promedio = precio_promedio.reindex(columnas_ordenadas)
 
         # Mostrar los datos en Streamlit
-        st.write("### Precio Promedio por Antigüedad")
+        ##st.write("### Precio Promedio por Antigüedad")
         #st.dataframe(precio_promedio)
 
         # Graficar con Matplotlib
@@ -87,7 +96,8 @@ def vista_graficos():
     else:
         st.error("Las columnas 'antiguedad' o 'precio' no existen en el DataFrame.")
 
-    st.write("Conclusiones de Enrique")
+    st.write("### Conclusiones sobre la relacion precio/antigüedad ")
+    st.write("En mi opinion respondiendo a la pregunta de punto 4 no existe una relacion clara entre precio y antiguedad, ademas que los años van en ragons de 10 o 20 años, pero parece ser que va la relacion del precio va mas en su ubicacion o tamaño de todos modos cuando nos reunamos lo miramos todos")
 
 
     ##JUANMA
