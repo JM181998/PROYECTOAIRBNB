@@ -6,41 +6,7 @@ from cargar_datos import cargar_datos
         #os._exit(0)
 #revisar cargar datos
 df = cargar_datos()
-
-nuevo_orden = [
-    # 1. Identificación y Metadatos
-    'identificador', 'nombre', 'href', 'agencia', 'timestamp',
-
-    # 2. Ubicación y Descripción General
-    'ubicacion', 'codigo_postal', 'tipo_de_casa', 'planta', 'orientacion',
-
-    # 3. Precio y Costos Asociados
-    'precio', 'precio_m2', 'gastos_de_comunidad',
-
-    # 4. Tiempos y Actualizaciones (movido aquí)
-    'antiguedad', 'actualizacion', 'telefono',
-
-    # 5. Dimensiones y Distribución
-    'superficie_util', 'superficie_construida', 'superficie_solar', 'superficie',
-    'habitaciones', 'baños', 'comedor',
-
-    # 6. Características del Inmueble
-    'cocina_equipada', 'amueblado', 'lavadero', 'balcon', 'terraza',
-    'trastero', 'garaje', 'piscina', 'chimenea', 'soleado',
-    'exterior', 'interior', 'carpinteria_interior', 'carpinteria_exterior',
-    'tipo_suelo', 'puerta_blindada', 'armarios_empotrados',
-
-    # 7. Servicios e Infraestructura
-    'luz', 'agua', 'gas', 'calefaccion', 'aire_acondicionado', 'sistema_de_seguridad',
-    'ascensor', 'portero_automatico', 'se_aceptan_mascotas',
-    'adaptado_a_personas_con_movilidad_reducida',
-    'calle_asfaltada', 'calle_alumbrada', 'alcantarillado', 'urbanizado',
-
-    # 8. Eficiencia Energética
-    'consumo', 'emisiones', 'vidrios_dobles'
-]
-
-df = df[nuevo_orden]
+df = df.dropna(subset=['precio'])
 
 def vista_graficos():
     st.sidebar.title("Navegación")
