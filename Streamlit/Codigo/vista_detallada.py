@@ -8,6 +8,13 @@ from cargar_datos import cargar_datos
 
 df = cargar_datos()
 df = df.dropna(subset=['precio'])
+# Identificar y eliminar outliers
+Q1 = df['precio'].quantile(0.05)
+Q3 = df['precio'].quantile(0.95)
+IQR = Q3 - Q1
+filtro = (df['precio'] >= (Q1 - 1.5 * IQR)) & (df['precio'] <= (Q3 + 1.5 * IQR))
+df = df[filtro]
+df = df[df['precio'] >= 10]
 
 def vista_detallada():
     st.sidebar.title("Navegación")
@@ -22,7 +29,7 @@ def vista_detallada():
 
     ##GRAFICO DE RADAR PARA COMPARAR INMUEBLES##
     columnas_importantes = ['identificador', 'superficie', 'superficie_construida', 'superficie_util', 'planta',
-                            'baños', 'precio_m2', 'precio', 'habitaciones', 'ubicacion', 'href', 'nombre']
+                            'baños', 'precio_m2', 'precio', 'habitaciones', 'ubicacion', 'href', 'nombre','CCAA']
     df_importante = df[columnas_importantes].copy()
 
     # Escala del precio
@@ -32,24 +39,34 @@ def vista_detallada():
     # Escala del resto de caracteristicas para normalizarlas
     scaler_others = MinMaxScaler()
     df_others_scaled = scaler_others.fit_transform(
-        df_importante.drop(columns=['identificador', 'precio', 'precio_escalado', 'ubicacion', 'href', 'nombre']))
+        df_importante.drop(columns=['identificador', 'precio', 'precio_escalado', 'ubicacion', 'href', 'nombre', 'CCAA']))
 
     # Combinamos los datos escalados
-    df_scaled = pd.DataFrame(df_others_scaled, columns=columnas_importantes[1:-4])
+    df_scaled = pd.DataFrame(df_others_scaled, columns=columnas_importantes[1:-5])
     df_scaled['precio'] = df_importante['precio_escalado']
     df_scaled['identificador'] = df_importante['identificador'].values
 
     # Título de la aplicación
     st.title('Comparativa de Inmuebles')
 
+    # Filtro de CCAA
+    ccaa_seleccionada = st.selectbox('Selecciona la CCAA', df['CCAA'].unique(), index=0)
+
+    # Filtrar el DataFrame por la CCAA seleccionada
+    df_ccaa_filtrado = df[df['CCAA'] == ccaa_seleccionada]
+
     # Filtro de ubicaciones
-    ubicaciones = st.multiselect('En qué ubicaciones quieres buscar',df['ubicacion'].unique(), placeholder= 'Selecciona una o varias ubicaciones')
+    ubicaciones = st.multiselect(
+        'En qué ubicaciones quieres buscar',
+        df_ccaa_filtrado['ubicacion'].unique(),
+        placeholder='Selecciona una o varias ubicaciones'
+    )
 
     # Filtrar el DataFrame por ubicaciones seleccionadas
     if ubicaciones:
-        df_filtrado = df[df['ubicacion'].isin(ubicaciones)]
+        df_filtrado = df_ccaa_filtrado[df_ccaa_filtrado['ubicacion'].isin(ubicaciones)]
     else:
-        df_filtrado = df
+        df_filtrado = df_ccaa_filtrado
 
     # Eliminamos columnas completamente vacías
     df_filtrado = df_filtrado.dropna(axis=1, how='all')
@@ -105,7 +122,7 @@ def vista_detallada():
 
     # Reordenamos las columnas segun su importancia
     columnas_ordenadas = [
-        'identificador', 'nombre', 'ubicacion', 'precio', 'precio_m2',
+        'identificador', 'nombre', 'ubicacion', 'CCAA', 'precio', 'precio_m2',
         'superficie', 'superficie_construida', 'superficie_util', 'planta',
         'habitaciones', 'baños', 'href'
     ]
