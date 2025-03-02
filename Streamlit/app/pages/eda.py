@@ -2,14 +2,8 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
-from cargar_datos import cargar_datos
 
-    #if st.button("⬅️ Volver"):
-        #os._exit(0)
-
-
-#revisar cargar datos
-df = cargar_datos()
+df = pd.read_csv("data/alquileres_completo_limpio.csv", low_memory=False)
 df = df.dropna(subset=['precio'])
 # Identificar y eliminar outliers
 Q1 = df['precio'].quantile(0.05)
