@@ -3,10 +3,8 @@ from PIL import Image
 
 def main():
     # Añadir imagen de título
-    image = Image.open('app/images/logo.png')
-    st.image(image, caption='Análisis de Datos de Pisos.com', use_container_width=True)
-
-    st.title("Análisis de Datos de Pisos.com")
+    image = Image.open('app/images/home_logo.png')
+    st.image(image, caption='Proyecto Fin de Bootcamp HAB.', use_container_width=True)
 
     st.markdown("""
         ## Bienvenido a la App de Análisis de Datos de Pisos.com
