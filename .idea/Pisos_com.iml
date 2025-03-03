@@ -5,7 +5,11 @@
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/StreamlitJ/.venv" />
     </content>
+<<<<<<< HEAD
     <orderEntry type="jdk" jdkName="Python 3.13 (PFB)" jdkType="Python SDK" />
+=======
+    <orderEntry type="jdk" jdkName="Python 3.12" jdkType="Python SDK" />
+>>>>>>> baa2877 (subo como ver las columnas categoricas y numericas e intento separar coordenadas)
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
