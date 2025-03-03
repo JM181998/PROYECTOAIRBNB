@@ -1,1 +1,2 @@
 compras_completo.csv filter=lfs diff=lfs merge=lfs -text
+csv_completos_limpio/compras_completo_limpio.csv filter=lfs diff=lfs merge=lfs -text
