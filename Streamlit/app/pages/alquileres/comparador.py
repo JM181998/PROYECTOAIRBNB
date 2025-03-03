@@ -4,14 +4,31 @@ from sklearn.preprocessing import MinMaxScaler, RobustScaler
 import plotly.graph_objects as go
 
 df = pd.read_csv("data/alquileres_completo_limpio.csv", low_memory=False)
+
+
+# Tratamiento de la columna 'precio'
+df['precio'] = df.apply(lambda row: row['precio_m2'] * row['superficie'] if pd.isnull(row['precio']) or row['precio'] < 1000 else row['precio'], axis=1)
 df = df.dropna(subset=['precio'])
+
 # Identificar y eliminar outliers
 Q1 = df['precio'].quantile(0.05)
 Q3 = df['precio'].quantile(0.95)
 IQR = Q3 - Q1
 filtro = (df['precio'] >= (Q1 - 1.5 * IQR)) & (df['precio'] <= (Q3 + 1.5 * IQR))
 df = df[filtro]
-df = df[df['precio'] >= 10]
+#df = df[df['precio'] >= 10]
+
+# Tratamiento de las columnas 'superficie', 'superficie_construida', 'superficie_util'
+for col in ['superficie', 'superficie_construida', 'superficie_util']:
+    if col not in df.columns:
+        df[col] = None
+
+df['superficie'] = df['superficie'].fillna(df[['superficie_construida', 'superficie_util']].mean(axis=1))
+df['superficie_construida'] = df['superficie_construida'].fillna(df[['superficie', 'superficie_util']].mean(axis=1))
+df['superficie_util'] = df['superficie_util'].fillna(df[['superficie', 'superficie_construida']].mean(axis=1))
+
+# Tratamiento de la columna 'precio_m2'
+df['precio_m2'] = df.apply(lambda row: row['precio'] / row['superficie'] if pd.isnull(row['precio_m2']) else row['precio_m2'], axis=1)
 
 def comparador_page():
     st.title("Vista Detallada")
